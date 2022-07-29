@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Tabs, Tab } from "react-bootstrap";
 import Add from './Component/Add/Add';
 import Active from './Component/Active/Active';
+import Completed from './Component/Completed/Completed';
 import {useState} from 'react'
 function App() {
   const [toDos,setToDos]=useState([])
@@ -13,19 +14,34 @@ function App() {
     if (newTodo === "") return;
     let newTodos = [
       {
-        id:Date.now(),text:newTodo,checked:false
+        id:Date.now(),text:newTodo,checked:false,completed:false
       },...toDos,
     ]
     setToDos(newTodos)
     setNewTodo("")
   }
 
+
+  // Active Todo app
   const checkTodo = (id)=>{
+    console.log(id);
     let newTodos =toDos.filter((todo)=>{
       if (todo.id === id){
         todo.checked = todo.checked?false: true;
       }
       return todo
+    })
+    setToDos(newTodos)
+  }
+
+  // Completed Todo app
+  const completedTodo = (id)=>{
+    console.log(id);
+    let newTodos = toDos.filter((todo)=>{
+      if (todo.id === id) {
+        todo.completed = todo.completed?false: true;
+      }
+      return todo;
     })
     setToDos(newTodos)
   }
@@ -62,14 +78,14 @@ function App() {
                   <Tab eventKey="Home" title="All">
 
 
-                    <Add checkTodo={checkTodo} toDos={toDos}/>
+                    <Add checkTodo={checkTodo} toDos={toDos} completedTodo={completedTodo}/>
 
                   </Tab>
                   <Tab eventKey="profile" title="Active">
-                    <Active toDos={toDos} checkTodo={checkTodo}/>
+                    <Active toDos={toDos} checkTodo={checkTodo} completedTodo={completedTodo}/>
                   </Tab>
                   <Tab eventKey="contact" title="Completed">
-                    
+                    <Completed toDos={toDos} completedTodo={completedTodo}/>
                   </Tab>
                 </Tabs>
                

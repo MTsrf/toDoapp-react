@@ -1,11 +1,12 @@
 import React from 'react'
 import './Active.css'
-function Active({  toDos ,checkTodo}) {
+function Active({  toDos ,checkTodo,completedTodo}) {
     return (
         <div>
             {
-                toDos.map(({ id, text, checked })=>{
+                toDos.map(({ id, text, checked,completed })=>{
                     if (!checked) return null;
+                    if (completed) return null;
                     return (
                         <ul className="list-group list-group-horizontal rounded-0 bg-transparent">
                             
@@ -25,7 +26,7 @@ function Active({  toDos ,checkTodo}) {
                                 <div className="d-flex flex-row justify-content-end mb-1">
                                     <a href="#!" className="text-info" data-mdb-toggle="tooltip" title="Edit todo"><i
                                         className="fas fa-pencil-alt me-3"></i></a>
-                                    <a href="#!" className="text-danger" data-mdb-toggle="tooltip" title="Delete todo"><i
+                                    <a onClick={()=>{completedTodo(id)}} className="text-danger" data-mdb-toggle="tooltip" title="Delete todo"><i 
                                         className="fas fa-trash-alt"></i></a>
                                 </div>
                                 <div className="text-end text-muted">

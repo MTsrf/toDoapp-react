@@ -1,11 +1,12 @@
 import React from 'react'
 import './Add.css'
-function Add({ checkTodo, toDos }) {
+function Add({ checkTodo, toDos,completedTodo }) {
     return (
         <div>
             {
-                toDos.map(({ id, text, checked }) => {
+                toDos.map(({ id, text, checked, completed }) => {
                     if (checked) return null;
+                    if (completed) return null;
                     return (
                         <ul className="list-group list-group-horizontal rounded-0 bg-transparent">
                             <li
@@ -24,11 +25,11 @@ function Add({ checkTodo, toDos }) {
                                 <div className="d-flex flex-row justify-content-end mb-1">
                                     <a href="#!" className="text-info" data-mdb-toggle="tooltip" title="Edit todo"><i
                                         className="fas fa-pencil-alt me-3"></i></a>
-                                    <a href="#!" className="text-danger" data-mdb-toggle="tooltip" title="Delete todo"><i
+                                    <a onClick={()=>{completedTodo(id)}} className="text-danger" data-mdb-toggle="tooltip" title="Delete todo"><i 
                                         className="fas fa-trash-alt"></i></a>
                                 </div>
                                 <div className="text-end text-muted">
-                                    <a href="#!" className="text-muted" data-mdb-toggle="tooltip" title="Created date">
+                                    <a href="" className="text-muted" data-mdb-toggle="tooltip" title="Created date">
                                         <p className="small mb-0"><i className="fas fa-info-circle me-2"></i>28th Jun 2020</p>
                                     </a>
                                 </div>
