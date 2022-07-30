@@ -1,5 +1,6 @@
 import './App.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+import Swal from 'sweetalert2';
 import { Tabs, Tab } from "react-bootstrap";
 import Add from './Component/Add/Add';
 import Active from './Component/Active/Active';
@@ -24,7 +25,7 @@ function App() {
 
   // Active Todo app
   const checkTodo = (id)=>{
-    console.log(id);
+
     let newTodos =toDos.filter((todo)=>{
       if (todo.id === id){
         todo.checked = todo.checked?false: true;
@@ -36,7 +37,7 @@ function App() {
 
   // Completed Todo app
   const completedTodo = (id)=>{
-    console.log(id);
+
     let newTodos = toDos.filter((todo)=>{
       if (todo.id === id) {
         todo.completed = todo.completed?false: true;
@@ -45,6 +46,28 @@ function App() {
     })
     setToDos(newTodos)
   }
+
+
+  //Edit Todo App
+  const editTodo = async (id) => {
+    const { value: editedTask } = await Swal.fire({
+      title: "Rename Task",
+      input: "text",
+      inputValue:toDos.find((todo)=>todo.id === id).text,
+      inputPlaceholder: "Enter Here",
+    });
+
+    if (editedTask) {
+      let newTodos =toDos.filter((todo) => {
+        if (todo.id === id) {
+          todo.text = editedTask;
+        }
+        return todo;
+      })
+      setToDos(newTodos);
+
+    }
+  };
   
   return (
     <section className="vh-100">
@@ -65,8 +88,7 @@ function App() {
                       <div className="d-flex flex-row align-items-center">
                         <input type="text" value={newTodo} onChange={(e)=>setNewTodo(e.target.value)} className="form-control form-control-lg" id="exampleFormControlInput1"
                           placeholder="Add new..." />
-                        <a href="#!"  data-mdb-toggle="tooltip" title="Set due date"><i
-                          className="fas fa-calendar-alt fa-lg me-3"></i></a>
+                        <a href="#!"  data-mdb-toggle="tooltip" title="Set due date"></a>
                         <div>
                           <button onClick={addNewTask} type="button" className="btn btn-primary">Add</button>
                         </div>
@@ -75,16 +97,16 @@ function App() {
                   </div>
                 </div>
                 <Tabs defaultActiveKey="Home" id="controlled-tab-example">
-                  <Tab eventKey="Home" title="All">
+                  <Tab eventKey="Home" title="New Added">
 
 
-                    <Add checkTodo={checkTodo} toDos={toDos} completedTodo={completedTodo}/>
+                    <Add checkTodo={checkTodo} toDos={toDos} completedTodo={completedTodo} editTodo={editTodo}/>
 
                   </Tab>
-                  <Tab eventKey="profile" title="Active">
-                    <Active toDos={toDos} checkTodo={checkTodo} completedTodo={completedTodo}/>
+                  <Tab eventKey="profile" title="Completed">
+                    <Active toDos={toDos} checkTodo={checkTodo} completedTodo={completedTodo} editTodo={editTodo}/>
                   </Tab>
-                  <Tab eventKey="contact" title="Completed">
+                  <Tab eventKey="contact" title="Dropped">
                     <Completed toDos={toDos} completedTodo={completedTodo}/>
                   </Tab>
                 </Tabs>
